@@ -3,11 +3,12 @@ version       = "0.2.0"
 author        = "francisl"
 description   = "Nim bindings for webview https://github.com/webview/webview"
 license       = "MIT"
+installDirs = @["webview"]
 skipDirs      = @["tests"]
 backend       = "cpp"
 
 # Dependencies
-requires "nim >= 1.3.0"
+requires "nim >= 1.4.0"
 
 task docs, "generate doc":
     exec "nim doc2 -o:docs/webview.html src/webview.nim"

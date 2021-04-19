@@ -1,3 +1,5 @@
+import tables
+
 {.passC: "-DWEBVIEW_STATIC -DWEBVIEW_IMPLEMENTATION".}
 {.passC: "-I" & currentSourcePath().substr(0, high(currentSourcePath()) - 4) .}
 
@@ -7,9 +9,10 @@ when defined(linux):
 elif defined(macosx):
   {.passL: "-framework WebKit".}
 type
-  Webview* {.header:"webview.h",importc:"webview_t".} = pointer
+  Webview* {.importc:"webview_t",header:"webview.h".} = pointer
   WebviewHint* = enum
     WEBVIEW_HINT_NONE,WEBVIEW_HINT_MIN,WEBVIEW_HINT_MAX,WEBVIEW_HINT_FIXED
+  BindFn* = proc(sequ: cstring, req:cstring)
 
 proc create*(debug:cint,window:pointer):Webview{.importc:"webview_create",header:"webview.h".}
 proc set_title*(w:Webview,title:cstring){.importc:"webview_set_title",header:"webview.h".}
@@ -17,3 +20,19 @@ proc set_size*(w:Webview,width:cint,height:cint,hints:WebviewHint){.importc:"web
 proc navigate*(w:Webview,url:cstring){.importc:"webview_navigate",header:"webview.h".}
 proc run*(w:Webview){.importc:"webview_run",header:"webview.h".}
 proc destroy*(w:Webview){.importc:"webview_destroy",header:"webview.h".}
+proc eval*(w:Webview, js:cstring){.importc:"webview_eval", header:"webview.h".}
+proc connect*(w:Webview, name:cstring, fn:pointer, arg:pointer){.importc:"webview_bind", header:"webview.h".}
+proc init*(w:Webview, js:cstring){.importc:"webview_init", header:"webview.h".}
+
+
+var bindCallTable = newTable[int, BindFn]()
+
+proc bindCProc(sequ:cstring, req:cstring, arg: pointer) {.exportc.} =
+  let idx = cast[int](arg)
+  let fn = bindCallTable[idx]
+  fn(sequ, req)
+
+proc connect*(w: Webview, name: cstring, fn: BindFn) =
+  let idx = bindCallTable.len()+1
+  bindCallTable[idx] = fn
+  connect(w, name, bindCProc, cast[pointer](idx))
