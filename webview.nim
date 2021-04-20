@@ -14,7 +14,7 @@ type
   WebviewHint* = enum
     WEBVIEW_HINT_NONE,WEBVIEW_HINT_MIN,WEBVIEW_HINT_MAX,WEBVIEW_HINT_FIXED
   BindFn* = proc(sequ: cstring, req: cstring)
-type WebviewCb = proc(seq: cstring, req: cstring, arg: pointer){.cdecl.}
+type WebviewCb = proc(seq: cstring2, req: cstring2, arg: pointer){.cdecl.}
 
 proc create*(debug:cint,window:pointer): Webview{.importc: "webview_create",header: "webview.h".}
 proc set_title*(w: Webview,title: cstring){.importc: "webview_set_title",header: "webview.h".}
