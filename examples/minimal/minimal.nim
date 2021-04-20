@@ -1,4 +1,4 @@
-import webview
+import ../../webview
 
 proc test(sequ: cstring, req:cstring) = 
     var stvalue: string = $sequ
