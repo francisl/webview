@@ -9,6 +9,7 @@ when defined(linux):
 elif defined(macosx):
   {.passL: "-framework WebKit".}
 type
+  cstring2{.importcpp:"const char*".} = cstring
   Webview* {.importc: "webview_t",header: "webview.h".} = pointer
   WebviewHint* = enum
     WEBVIEW_HINT_NONE,WEBVIEW_HINT_MIN,WEBVIEW_HINT_MAX,WEBVIEW_HINT_FIXED
@@ -28,10 +29,10 @@ proc init*(w: Webview, js: cstring){.importc: "webview_init", header: "webview.h
 
 var bindCallTable = newTable[int, BindFn]()
 
-proc bindCProc(sequ: cstring, req: cstring, arg: pointer) {.cdecl.} =
+proc bindCProc(sequ: cstring2, req: cstring2, arg: pointer) {.cdecl.} =
   let idx = cast[int](arg)
   let fn = bindCallTable[idx]
-  fn(sequ, req)
+  fn(cast[cstring](sequ),cast[cstring](req))
 
 proc connect*(w: Webview, name: cstring, fn: BindFn) =
   let idx = bindCallTable.len()+1
