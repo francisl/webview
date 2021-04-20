@@ -25,7 +25,7 @@
 #define WEBVIEW_H
 
 #ifndef WEBVIEW_API
-#define WEBVIEW_API extern inline
+#define WEBVIEW_API extern inline 
 #endif
 
 #ifdef __cplusplus
@@ -591,9 +591,9 @@ using browser_engine = gtk_webkit_engine;
 namespace webview {
 
 // Helpers to avoid too much typing
-id operator"" _cls(const char *s, std::size_t) { return (id)objc_getClass(s); }
-SEL operator"" _sel(const char *s, std::size_t) { return sel_registerName(s); }
-id operator"" _str(const char *s, std::size_t) {
+inline id operator"" _cls(const char *s, std::size_t) { return (id)objc_getClass(s); }
+inline SEL operator"" _sel(const char *s, std::size_t) { return sel_registerName(s); }
+inline id operator"" _str(const char *s, std::size_t) {
   return ((id(*)(id, SEL, const char *))objc_msgSend)(
       "NSString"_cls, "stringWithUTF8String:"_sel, s);
 }
