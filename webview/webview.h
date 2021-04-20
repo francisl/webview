@@ -591,9 +591,9 @@ using browser_engine = gtk_webkit_engine;
 namespace webview {
 
 // Helpers to avoid too much typing
-static id operator"" _cls(const char *s, std::size_t) { return (id)objc_getClass(s); }
-static SEL operator"" _sel(const char *s, std::size_t) { return sel_registerName(s); }
-static id operator"" _str(const char *s, std::size_t) {
+static inline id operator"" _cls(const char *s, std::size_t) { return (id)objc_getClass(s); }
+static inline SEL operator"" _sel(const char *s, std::size_t) { return sel_registerName(s); }
+static inline id operator"" _str(const char *s, std::size_t) {
   return ((id(*)(id, SEL, const char *))objc_msgSend)(
       "NSString"_cls, "stringWithUTF8String:"_sel, s);
 }
