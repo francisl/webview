@@ -5,9 +5,12 @@ description   = "Nim bindings for webview https://github.com/webview/webview"
 license       = "MIT"
 skipDirs      = @["tests"]
 backend       = "cpp"
+srcDir        = "src"
+
 
 # Dependencies
-requires "nim >= 1.4.0"
+requires "nim >= 1.6.10"
+
 
 task docs, "generate doc":
     exec "nim doc2 -o:docs/webview.html src/webview.nim"

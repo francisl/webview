@@ -17,3 +17,4 @@ proc set_size*(w:Webview,width:cint,height:cint,hints:WebviewHint){.importc:"web
 proc navigate*(w:Webview,url:cstring){.importc:"webview_navigate",header:"webview.h".}
 proc run*(w:Webview){.importc:"webview_run",header:"webview.h".}
 proc destroy*(w:Webview){.importc:"webview_destroy",header:"webview.h".}
+proc terminate*(w: Webview) {.importc: "webview_terminate", header: "webview.h".}
