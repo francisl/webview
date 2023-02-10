@@ -22,6 +22,9 @@ task update_webview, "update webview.h":
 task run_example, "running minimal example":
     exec "nim cpp --run examples/minimal/minimal.nim"
 
+task run_example2, "running minimal example":
+    exec "nim cpp -p:./src --cincludes:./webview --run examples/minimal/minimal.nim"
+
 task clean, "clean tmp files":
     exec "rm -rf nimcache"
     exec "rm -rf tests/nimcache"
